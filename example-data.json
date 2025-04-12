@@ -1,0 +1,64 @@
+{
+  "events": [
+    {
+      "event": "file_access",
+      "file": "/etc/passwd",
+      "pid": 1234,
+      "process": "sshd",
+      "process_path": "/usr/sbin/sshd",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-10T19:30:00.000Z"
+    },
+    {
+      "event": "module_load",
+      "args": ["-f", "--config", "/etc/config.conf"],
+      "binary": "/usr/lib/security-module",
+      "pid": 5678,
+      "process": "security-agent",
+      "process_path": "/usr/sbin/security-agent",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-10T19:31:00.000Z"
+    },
+    {
+      "event": "ransomware",
+      "count": 50,
+      "elevated": 1,
+      "file": "/home/user/documents/important.doc",
+      "pid": 9012,
+      "process": "suspicious.exe",
+      "process_path": "/tmp/suspicious.exe",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T19:32:00.000Z"
+    },
+    {
+      "event": "setuid",
+      "pid": 3456,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "uid": 0,
+      "gid": 0,
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T19:33:00.000Z"
+    },
+    {
+      "event": "user_management",
+      "args": ["--create-home", "--shell", "/bin/bash", "newuser"],
+      "binary": "/usr/sbin/useradd",
+      "pid": 7890,
+      "process": "useradd",
+      "process_path": "/usr/sbin/useradd",
+      "node_id": "node-3",
+      "node_name": "Production Server 3",
+      "node_ip": "192.168.1.102",
+      "timestamp": "2025-04-10T19:34:00.000Z"
+    }
+  ]
+}
