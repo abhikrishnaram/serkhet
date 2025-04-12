@@ -1,0 +1,412 @@
+{
+  "events": [
+    {
+      "event": "file_access",
+      "file": "/etc/passwd",
+      "pid": 2390,
+      "process": "tt",
+      "process_path": "/home/lark/test/test/tt",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-08T08:15:23.000Z"
+    },
+    {
+      "event": "file_access",
+      "file": "/root/.ssh/authorized_keys",
+      "pid": 2390,
+      "process": "tt",
+      "process_path": "/home/lark/test/test/tt",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-08T08:15:45.000Z"
+    },
+    {
+      "event": "file_access",
+      "file": "/root/.bashrc",
+      "pid": 2390,
+      "process": "tt",
+      "process_path": "/home/lark/test/test/tt",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-09T08:16:12.000Z"
+    },
+    {
+      "args": [
+        "insmod",
+        "hello.ko"
+      ],
+      "binary": "/usr/bin/insmod",
+      "event": "module_load",
+      "pid": 6353,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-08T08:30:15.000Z"
+    },
+    {
+      "args": [
+        "insmod",
+        "rootkit.ko"
+      ],
+      "binary": "/usr/bin/insmod",
+      "event": "module_load",
+      "pid": 7234,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-09T09:45:23.000Z"
+    },
+    {
+      "args": [
+        "modprobe",
+        "hidden_module"
+      ],
+      "binary": "/usr/sbin/modprobe",
+      "event": "module_load",
+      "pid": 8123,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-3",
+      "node_name": "Production Server 3",
+      "node_ip": "192.168.1.102",
+      "timestamp": "2025-04-10T10:12:45.000Z"
+    },
+    {
+      "args": [
+        "insmod",
+        "/tmp/keylogger.ko"
+      ],
+      "binary": "/usr/bin/insmod",
+      "event": "module_load",
+      "pid": 9234,
+      "process": "bash",
+      "process_path": "/bin/bash",
+      "node_id": "node-4",
+      "node_name": "Web Server 1",
+      "node_ip": "192.168.1.103",
+      "timestamp": "2025-04-10T11:23:45.000Z"
+    },
+    {
+      "args": [
+        "insmod",
+        "/opt/custom/network_sniffer.ko"
+      ],
+      "binary": "/usr/bin/insmod",
+      "event": "module_load",
+      "pid": 10345,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-5",
+      "node_name": "Database Server",
+      "node_ip": "192.168.1.104",
+      "timestamp": "2025-04-10T12:34:56.000Z"
+    },
+    {
+      "count": 2186,
+      "elevated": 0,
+      "event": "ransomware",
+      "file": "/tmp/honeypot_dir5/honeypot_file",
+      "pid": 7581,
+      "process": "a.out",
+      "process_path": "/home/lark/test/test/a.out",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-08T08:45:12.000Z"
+    },
+    {
+      "count": 2188,
+      "elevated": 0,
+      "event": "ransomware",
+      "file": "/tmp/honeypot_dir4/honeypot_file",
+      "pid": 7581,
+      "process": "a.out",
+      "process_path": "/home/lark/test/test/a.out",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-08T08:45:15.000Z"
+    },
+    {
+      "count": 2190,
+      "elevated": 0,
+      "event": "ransomware",
+      "file": "/tmp/honeypot_dir3/honeypot_file",
+      "pid": 7581,
+      "process": "a.out",
+      "process_path": "/home/lark/test/test/a.out",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-09T08:45:18.000Z"
+    },
+    {
+      "count": 2192,
+      "elevated": 0,
+      "event": "ransomware",
+      "file": "/tmp/honeypot_dir2/honeypot_file",
+      "pid": 7581,
+      "process": "a.out",
+      "process_path": "/home/lark/test/test/a.out",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-09T08:45:21.000Z"
+    },
+    {
+      "count": 2194,
+      "elevated": 0,
+      "event": "ransomware",
+      "file": "/tmp/honeypot_dir1/honeypot_file",
+      "pid": 7581,
+      "process": "a.out",
+      "process_path": "/home/lark/test/test/a.out",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-09T08:45:24.000Z"
+    },
+    {
+      "count": 3245,
+      "elevated": 1,
+      "event": "ransomware",
+      "file": "/home/user1/Documents/important.docx",
+      "pid": 8234,
+      "process": "malware.exe",
+      "process_path": "/tmp/malware.exe",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T09:12:34.000Z"
+    },
+    {
+      "count": 3246,
+      "elevated": 1,
+      "event": "ransomware",
+      "file": "/home/user1/Documents/financial_report.xlsx",
+      "pid": 8234,
+      "process": "malware.exe",
+      "process_path": "/tmp/malware.exe",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T09:12:36.000Z"
+    },
+    {
+      "count": 3247,
+      "elevated": 1,
+      "event": "ransomware",
+      "file": "/home/user1/Documents/client_data.csv",
+      "pid": 8234,
+      "process": "malware.exe",
+      "process_path": "/tmp/malware.exe",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T09:12:38.000Z"
+    },
+    {
+      "count": 4123,
+      "elevated": 1,
+      "event": "ransomware",
+      "file": "/var/www/html/index.php",
+      "pid": 9345,
+      "process": "cryptolocker",
+      "process_path": "/opt/cryptolocker",
+      "node_id": "node-4",
+      "node_name": "Web Server 1",
+      "node_ip": "192.168.1.103",
+      "timestamp": "2025-04-10T10:23:45.000Z"
+    },
+    {
+      "count": 4124,
+      "elevated": 1,
+      "event": "ransomware",
+      "file": "/var/www/html/admin/config.php",
+      "pid": 9345,
+      "process": "cryptolocker",
+      "process_path": "/opt/cryptolocker",
+      "node_id": "node-4",
+      "node_name": "Web Server 1",
+      "node_ip": "192.168.1.103",
+      "timestamp": "2025-04-10T10:23:47.000Z"
+    },
+    {
+      "event": "setuid",
+      "pid": 2412,
+      "process": "setfiles",
+      "process_path": "/home/lark/test/test/setfiles",
+      "uid": 0,
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-08T08:55:23.000Z"
+    },
+    {
+      "event": "setgid",
+      "gid": 0,
+      "pid": 2412,
+      "process": "setfiles",
+      "process_path": "/home/lark/test/test/setfiles",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-08T08:55:24.000Z"
+    },
+    {
+      "event": "setuid",
+      "pid": 3456,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "uid": 0,
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T09:34:12.000Z"
+    },
+    {
+      "event": "setgid",
+      "gid": 0,
+      "pid": 3456,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T09:34:13.000Z"
+    },
+    {
+      "event": "setuid",
+      "pid": 4567,
+      "process": "su",
+      "process_path": "/usr/bin/su",
+      "uid": 0,
+      "node_id": "node-3",
+      "node_name": "Production Server 3",
+      "node_ip": "192.168.1.102",
+      "timestamp": "2025-04-10T10:45:23.000Z"
+    },
+    {
+      "event": "setuid",
+      "pid": 5678,
+      "process": "unknown_binary",
+      "process_path": "/tmp/unknown_binary",
+      "uid": 0,
+      "node_id": "node-4",
+      "node_name": "Web Server 1",
+      "node_ip": "192.168.1.103",
+      "timestamp": "2025-04-10T11:23:45.000Z"
+    },
+    {
+      "args": [
+        "useradd",
+        "testuser"
+      ],
+      "binary": "/usr/bin/useradd",
+      "event": "user_management",
+      "pid": 4527,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-09T09:15:23.000Z"
+    },
+    {
+      "args": [
+        "usermod",
+        "-aG",
+        "lark",
+        "testuser"
+      ],
+      "binary": "/usr/bin/usermod",
+      "event": "user_management",
+      "pid": 6044,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-1",
+      "node_name": "Production Server 1",
+      "node_ip": "192.168.1.100",
+      "timestamp": "2025-04-09T09:16:45.000Z"
+    },
+    {
+      "args": [
+        "useradd",
+        "-m",
+        "-s",
+        "/bin/bash",
+        "backdoor"
+      ],
+      "binary": "/usr/bin/useradd",
+      "event": "user_management",
+      "pid": 7123,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T10:23:45.000Z"
+    },
+    {
+      "args": [
+        "usermod",
+        "-aG",
+        "sudo",
+        "backdoor"
+      ],
+      "binary": "/usr/bin/usermod",
+      "event": "user_management",
+      "pid": 7124,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-2",
+      "node_name": "Production Server 2",
+      "node_ip": "192.168.1.101",
+      "timestamp": "2025-04-10T10:24:12.000Z"
+    },
+    {
+      "args": [
+        "userdel",
+        "-r",
+        "securityuser"
+      ],
+      "binary": "/usr/bin/userdel",
+      "event": "user_management",
+      "pid": 8234,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-3",
+      "node_name": "Production Server 3",
+      "node_ip": "192.168.1.102",
+      "timestamp": "2025-04-10T11:34:56.000Z"
+    },
+    {
+      "args": [
+        "useradd",
+        "-m",
+        "-s",
+        "/bin/bash",
+        "-u",
+        "0",
+        "-o",
+        "rootuser"
+      ],
+      "binary": "/usr/bin/useradd",
+      "event": "user_management",
+      "pid": 9345,
+      "process": "sudo",
+      "process_path": "/usr/bin/sudo",
+      "node_id": "node-4",
+      "node_name": "Web Server 1",
+      "node_ip": "192.168.1.103",
+      "timestamp": "2025-04-10T12:45:23.000Z"
+    }
+  ]
+}

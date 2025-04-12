@@ -9,7 +9,7 @@ export default function AreaStatsError({ error }: { error: Error }) {
       <IconAlertCircle className='h-4 w-4' />
       <AlertTitle>Error</AlertTitle>
       <AlertDescription>
-        Failed to load area statistics: {error.message}
+        Failed to load timeline statistics: {error.message}
       </AlertDescription>
     </Alert>
   );

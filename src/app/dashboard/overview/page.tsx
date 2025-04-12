@@ -9,6 +9,7 @@ import { IconAlertTriangle, IconFileText, IconServer, IconUser, IconVirus } from
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { getEventCount, getNodes, Node, updateSecurityData, getEventTimeline, SecurityData } from '@/lib/data-service';
 import { FileUploader } from '@/components/file-uploader';
+import { PieGraph } from '@/features/overview/components/pie-graph';
 
 interface FileWithPreview extends File {
   preview?: string;
@@ -58,7 +59,7 @@ export default function OverviewPage() {
     { name: 'Module Load', value: eventCounts.module, color: '#00C49F' },
     { name: 'Ransomware', value: eventCounts.ransomware, color: '#FF8042' },
     { name: 'Privilege Escalation', value: eventCounts.setuid, color: '#FFBB28' },
-    { name: 'User Management', value: eventCounts.useradd, color: '#FF8042' }
+    { name: 'User Management', value: eventCounts.useradd, color: '#8884d8' }
   ], [eventCounts]);
 
   const handleUpload = useCallback(async (files: FileWithPreview[]) => {
@@ -204,6 +205,7 @@ export default function OverviewPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex justify-center">
+              <PieGraph />
               <div className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>

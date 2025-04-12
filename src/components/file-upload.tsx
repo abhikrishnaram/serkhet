@@ -1,9 +1,13 @@
+'use client'
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { toast } from 'sonner';
+import { AlertCircle } from 'lucide-react';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export function FileUpload() {
   const [isUploading, setIsUploading] = useState(false);
@@ -13,27 +17,37 @@ export function FileUpload() {
     const file = acceptedFiles[0];
     if (!file) return;
 
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error('File size exceeds 10MB limit');
+      return;
+    }
+
     setIsUploading(true);
-    setProgress(0);
+    setProgress(10); // Initial progress
 
     try {
       const formData = new FormData();
       formData.append('file', file);
 
+      setProgress(30); // File validation started
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
 
+      setProgress(60); // Upload completed, processing started
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error('Upload failed');
+        throw new Error(data.error || 'Upload failed');
       }
 
-      const data = await response.json();
+      setProgress(100); // Processing completed
       toast.success(`Successfully processed ${data.recordsProcessed} records`);
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Failed to upload file');
+      toast.error(error instanceof Error ? error.message : 'Failed to upload file');
     } finally {
       setIsUploading(false);
       setProgress(0);
@@ -50,7 +64,11 @@ export function FileUpload() {
   });
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 space-y-4">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <AlertCircle size={16} />
+        <span>Upload a JSON file containing security events data (Max size: 10MB)</span>
+      </div>
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors

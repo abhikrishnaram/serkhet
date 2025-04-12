@@ -1,7 +1,7 @@
 import { delay } from '@/constants/mock-api';
-import { AreaGraph } from '@/features/overview/components/area-graph';
+import { TimelineGraph } from '@/features/overview/components/timeline-graph';
 
 export default async function AreaStats() {
-  await await delay(2000);
-  return <AreaGraph />;
+  await delay(2000);
+  return <TimelineGraph />;
 }

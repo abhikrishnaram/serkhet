@@ -7,10 +7,14 @@ export interface NavItem {
   external?: boolean;
   shortcut?: [string, string];
   icon?: keyof typeof Icons;
-  label?: string;
   description?: string;
   isActive?: boolean;
   items?: NavItem[];
+}
+
+export interface SidebarNavGroup {
+  label: string;
+  items: NavItem[];
 }
 
 export interface NavItemWithChildren extends NavItem {

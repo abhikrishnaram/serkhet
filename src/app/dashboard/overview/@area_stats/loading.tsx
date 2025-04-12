@@ -1,5 +1,5 @@
-import { AreaGraphSkeleton } from '@/features/overview/components/area-graph-skeleton';
+import { TimelineGraphSkeleton } from '@/features/overview/components/timeline-graph-skeleton';
 
 export default function Loading() {
-  return <AreaGraphSkeleton />;
+  return <TimelineGraphSkeleton />;
 }

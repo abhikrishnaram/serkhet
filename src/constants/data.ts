@@ -1,4 +1,4 @@
-import { NavItem } from '@/types';
+import { SidebarNavGroup } from '@/types';
 
 export type Product = {
   photo_url: string;
@@ -12,24 +12,29 @@ export type Product = {
 };
 
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
-export const navItems: NavItem[] = [
+export const navItems: SidebarNavGroup[] = [
   {
-    title: 'Security Overview',
-    url: '/dashboard/overview',
-    icon: 'dashboard',
-    isActive: false,
-    shortcut: ['d', 'd'],
-    items: []
-  },
-  {
-    title: 'IoT Security',
-    url: '#',
-    icon: 'shield',
-    isActive: true,
-    shortcut: ['i', 's'],
+    label: 'Overview',
     items: [
       {
-        title: 'Node Management',
+        title: 'Dashboard',
+        url: '/dashboard/overview',
+        icon: 'dashboard',
+        shortcut: ['d', 'd']
+      },
+      {
+        title: 'Upload Events',
+        url: '/dashboard/overview/upload',
+        icon: 'post',
+        shortcut: ['u', 'e']
+      }
+    ]
+  },
+  {
+    label: 'Management',
+    items: [
+      {
+        title: 'Node Manager',
         url: '/dashboard/nodes',
         icon: 'server',
         shortcut: ['n', 'm']
@@ -41,30 +46,45 @@ export const navItems: NavItem[] = [
         shortcut: ['s', 'e']
       },
       {
-        title: 'Configuration',
+        title: 'Config Manager',
         url: '/dashboard/config',
         icon: 'settings',
         shortcut: ['c', 'f']
+      },
+      {
+        title: 'Device Inventory',
+        url: '/dashboard/inventory',
+        icon: 'laptop',
+        shortcut: ['d', 'i']
+      },
+      {
+        title: 'Firmware Updates',
+        url: '/dashboard/firmware',
+        icon: 'settings',
+        shortcut: ['f', 'u']
       }
     ]
   },
   {
-    title: 'Account',
-    url: '#',
-    icon: 'billing',
-    isActive: true,
+    label: 'Accounts',
     items: [
       {
         title: 'Profile',
         url: '/dashboard/profile',
         icon: 'userPen',
-        shortcut: ['m', 'm']
+        shortcut: ['p', 'r']
       },
       {
-        title: 'Login',
-        shortcut: ['l', 'l'],
-        url: '/',
-        icon: 'login'
+        title: 'API Keys',
+        url: '/dashboard/api-keys',
+        icon: 'shield',
+        shortcut: ['a', 'k']
+      },
+      {
+        title: 'Team Members',
+        url: '/dashboard/team',
+        icon: 'user2',
+        shortcut: ['t', 'm']
       }
     ]
   }

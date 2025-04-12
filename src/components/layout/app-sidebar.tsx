@@ -1,10 +1,5 @@
 'use client';
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -23,9 +18,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarRail
 } from '@/components/ui/sidebar';
 import { UserAvatarProfile } from '@/components/user-avatar-profile';
@@ -34,7 +26,6 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import { useUser } from '@clerk/nextjs';
 import {
   IconBell,
-  IconChevronRight,
   IconChevronsDown,
   IconCreditCard,
   IconLogout,
@@ -47,16 +38,16 @@ import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
+
 export const company = {
-  name: 'Acme Inc',
+  name: 'Serkhet',
   logo: IconPhotoUp,
   plan: 'Enterprise'
 };
 
 const tenants = [
-  { id: '1', name: 'Acme Inc' },
-  { id: '2', name: 'Beta Corp' },
-  { id: '3', name: 'Gamma Ltd' }
+  { id: '1', name: 'Zone A' },
+  { id: '2', name: 'Test Cluster' },
 ];
 
 export default function AppSidebar() {
@@ -84,64 +75,30 @@ export default function AppSidebar() {
         />
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
-        <SidebarGroup>
-          <SidebarGroupLabel>Overview</SidebarGroupLabel>
-          <SidebarMenu>
-            {navItems.map((item) => {
-              const Icon = item.icon ? Icons[item.icon] : Icons.logo;
-              return item?.items && item?.items?.length > 0 ? (
-                <Collapsible
-                  key={item.title}
-                  asChild
-                  defaultOpen={item.isActive}
-                  className='group/collapsible'
-                >
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton
-                        tooltip={item.title}
-                        isActive={pathname === item.url}
-                      >
-                        {item.icon && <Icon />}
+        {navItems.map((section) => (
+          <SidebarGroup key={section.label}>
+            <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
+            <SidebarMenu>
+              {section.items.map((item) => {
+                const Icon = item.icon ? Icons[item.icon] : Icons.logo;
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      tooltip={item.title}
+                      isActive={pathname === item.url}
+                    >
+                      <Link href={item.url}>
+                        <Icon />
                         <span>{item.title}</span>
-                        <IconChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub>
-                        {item.items?.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton
-                              asChild
-                              isActive={pathname === subItem.url}
-                            >
-                              <Link href={subItem.url}>
-                                <span>{subItem.title}</span>
-                              </Link>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        ))}
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
+                      </Link>
+                    </SidebarMenuButton>
                   </SidebarMenuItem>
-                </Collapsible>
-              ) : (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    tooltip={item.title}
-                    isActive={pathname === item.url}
-                  >
-                    <Link href={item.url}>
-                      <Icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              );
-            })}
-          </SidebarMenu>
-        </SidebarGroup>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
@@ -180,7 +137,6 @@ export default function AppSidebar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-
                 <DropdownMenuGroup>
                   <DropdownMenuItem
                     onClick={() => router.push('/dashboard/profile')}
