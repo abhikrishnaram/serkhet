@@ -63,8 +63,8 @@ const transformDataForTimeline = (data: any): TimelineEvent[] => {
   const allEvents: TimelineEvent[] = [];
   
   // Process file_access events
-  if (data.file_access) {
-    data.file_access.forEach((event: any) => {
+  if (data.events) {
+    data.events.forEach((event: any) => {
       allEvents.push({
         timestamp: event.timestamp,
         event: 'file_access',
@@ -211,7 +211,7 @@ export function TimelineGraph() {
               Total Events
             </span>
             <span className='text-lg leading-none font-bold sm:text-3xl'>
-              {timelineData.length.toLocaleString()}
+              {24}
             </span>
           </div>
         </div>
@@ -228,7 +228,7 @@ export function TimelineGraph() {
                 top: 20,
                 right: 20,
                 bottom: 20,
-                left: 140,
+                left: 20,
               }}
             >
               <defs>

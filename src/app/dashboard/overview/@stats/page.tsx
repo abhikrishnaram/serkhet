@@ -8,7 +8,7 @@ const StatsCards = () => {
             title: "Total Events",
             subtext: "All security events in the last 30 days",
             description: "5 different categories tracked",
-            value: "1,234",
+            value: "24",
             percentage: "+15%",
             trend: "up" as const,
             trendIcon: <IconTrendingUp />
@@ -17,7 +17,7 @@ const StatsCards = () => {
             title: "Critical Alerts",
             subtext: "High priority security incidents",
             description: "Requires immediate attention",
-            value: "28",
+            value: "1",
             percentage: "-12%",
             trend: "down" as const,
             trendIcon: <IconTrendingDown />
@@ -26,10 +26,10 @@ const StatsCards = () => {
             title: "Active Devices",
             subtext: "Connected IoT devices in network",
             description: "Healthy connection rate",
-            value: "456",
-            percentage: "+8%",
-            trend: "up" as const,
-            trendIcon: <IconTrendingUp />
+            value: "1",
+            percentage: "-50%",
+            trend: "down" as const,
+            trendIcon: <IconTrendingDown />
         },
         {
             title: "Threat Score",

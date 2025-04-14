@@ -1,3 +1,8 @@
 
 # clerk configuration (can include secrets)
 /.clerk/
+.next/
+.env*
+node_modules/
+drizzle/
+**/.DS_Store
