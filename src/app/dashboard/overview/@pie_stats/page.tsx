@@ -60,10 +60,12 @@ for (const event of eventCounts) {
   const count = Number(event.count) || 0;
   
   // Look up the category for this event type
+  // @ts-ignore
   const category = eventTypeMapping[event.eventType];
   
   // If we have a mapping for this event type, increment the appropriate counter
   if (category) {
+    // @ts-ignore
     counts[category] += count;
   }
 }
