@@ -7,8 +7,8 @@ interface StatCardProps {
     subtext: string
     description: string
     value: string
-    percentage: string
-    trend: "up" | "down"
+    percentage?: string
+    trend?: "up" | "down"
     trendIcon?: React.ReactNode
 }
 
@@ -21,6 +21,9 @@ export const StatCard = ({
     trend,
     trendIcon
 }: StatCardProps) => {
+    // Determine if we should show trend information
+    const showTrend = percentage && percentage.length > 0;
+    
     return (
         <Card className='@container/card'>
           <CardHeader>
@@ -28,16 +31,19 @@ export const StatCard = ({
             <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
                 {value}
             </CardTitle>
-            <CardAction>
-              <Badge variant='outline'>
-                {trend === "up" ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
-                {percentage}
-              </Badge>
-            </CardAction>
+            {showTrend && (
+              <CardAction>
+                <Badge variant='outline'>
+                  {trend === "up" ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
+                  {percentage}
+                </Badge>
+              </CardAction>
+            )}
           </CardHeader>
           <CardFooter className='flex-col items-start gap-1.5 text-sm'>
             <div className='line-clamp-1 flex gap-2 font-medium'>
-              {description} {trend === "up" ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
+              {description}
+              {showTrend && (trend === "up" ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />)}
             </div>
             <div className="text-muted-foreground text-xs">
                 {subtext}

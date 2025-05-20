@@ -38,14 +38,12 @@ export default function SignUpViewPage({ stars }: { stars: number }) {
           >
             <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
           </svg>
-          Logo
+          Serkhet Dashboard
         </div>
         <div className='relative z-20 mt-auto'>
           <blockquote className='space-y-2'>
             <p className='text-lg'>
-              &ldquo;This starter template has saved me countless hours of work
-              and helped me deliver projects to my clients faster than ever
-              before.&rdquo;
+              A simple kernel-based threat detection agent focused on Linux systems, particularly ARMv7/Raspberry Pi. It monitors system behavior using kernel tracepoints and reports suspicious activities.
             </p>
             <footer className='text-sm'>Random Dude</footer>
           </blockquote>
@@ -57,7 +55,7 @@ export default function SignUpViewPage({ stars }: { stars: number }) {
           <Link
             className={cn('group inline-flex hover:text-yellow-200')}
             target='_blank'
-            href={'https://github.com/kiranism/next-shadcn-dashboard-starter'}
+            href={'https://github.com/abhikrishnaram/serkhet-firmware'}
           >
             <div className='flex items-center'>
               <GitHubLogoIcon className='size-4' />

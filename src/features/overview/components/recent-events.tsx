@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Card,
   CardHeader,
@@ -8,6 +7,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { IconAlertTriangle, IconCircleCheck, IconInfoCircle } from '@tabler/icons-react';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
 const eventsData = [
   {
@@ -59,7 +59,7 @@ const getSeverityColor = (severity: string) => {
 
 const getIcon = (icon: string) => {
   switch (icon) {
-    case 'alert':
+    case 'impact':
       return <IconAlertTriangle className="h-4 w-4" />;
     case 'success':
       return <IconCircleCheck className="h-4 w-4" />;
@@ -70,7 +70,7 @@ const getIcon = (icon: string) => {
   }
 };
 
-export function RecentEvents() {
+export function RecentEvents({ data }: { data: any[] }) {
   return (
     <Card className='h-full'>
       <CardHeader>
@@ -78,24 +78,29 @@ export function RecentEvents() {
         <CardDescription>System events from the last 24 hours</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className='space-y-6 max-h-[320px] overflow-y-auto'>
-          {eventsData.map((event, index) => (
+        <div className='space-y-6 max-h-[600px] overflow-y-auto'>
+          {data.map((event, index) => (
             <div key={index} className='flex items-start space-x-4'>
-              <div className={`p-2 rounded-full ${getSeverityColor(event.severity)}`}>
+              <div className={`p-2 rounded-full`}>
                 {getIcon(event.icon)}
               </div>
               <div className='flex-1 space-y-1'>
                 <div className='flex items-center justify-between'>
-                  <p className='text-sm font-medium'>{event.title}</p>
-                  <span className='text-xs text-muted-foreground'>{event.timestamp}</span>
+                  <p className='text-sm font-medium'>{event.event_type}</p>
+                  <span className='text-xs text-muted-foreground'>
+                    {formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}
+                    {/* {typeof event.timestamp === 'string' && event.timestamp.includes('T')  */}
+                      {/* ? formatDistanceToNow(parseISO(event.timestamp), { addSuffix: true }) */}
+                      {/* : event.timestamp} */}
+                  </span>
                 </div>
-                <p className='text-sm text-muted-foreground'>{event.description}</p>
+                <p className='text-sm text-muted-foreground'>{event.process || ''}</p>
                 <div className='flex items-center space-x-2'>
                   <Badge variant="outline" className='text-xs'>
-                    {event.node}
+                    {event.node_id}
                   </Badge>
-                  <Badge className={`text-xs ${getSeverityColor(event.severity)}`}>
-                    {event.severity.toUpperCase()}
+                  <Badge className="text-xs">
+                    {event.raw_data.tactic_id.toUpperCase()}
                   </Badge>
                 </div>
               </div>

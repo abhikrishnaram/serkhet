@@ -61,11 +61,11 @@ const chartConfig = {
 
 interface PieGraphProps {
   data?: {
-    file_access: any[];
-    module_load: any[];
-    ransomware: any[];
-    privilege_escalation: any[];
-    user_management: any[];
+    file_access: number;
+    module_load: number;
+    ransomware: number;
+    privilege_escalation: number;
+    user_management: number;
   };
 }
 
@@ -75,7 +75,7 @@ export function PieGraph({ data }: PieGraphProps) {
     
     return chartData.map(item => ({
       ...item,
-      count: data[item.event as keyof typeof data]?.length || 0
+      count: data[item.event as keyof typeof data] || 0,
     }));
   }, [data]);
 

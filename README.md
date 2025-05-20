@@ -1,110 +1,157 @@
-serqet: IoT security - malware
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/9113740/201498864-2a900c64-d88f-4ed4-b5cf-770bcb57e1f5.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/9113740/201498152-b171abb8-9225-487a-821c-6ff49ee48579.png">
-</picture>
+# Serkhet - IoT Security & Malware Monitoring Platform
 
-<div align="center"><strong>Next.js Admin Dashboard Starter Template With Shadcn-ui</strong></div>
-<div align="center">Built with the Next.js 15 App Router</div>
-<br />
 <div align="center">
-<a href="https://dub.sh/shadcn-dashboard">View Demo</a>
-<span>
+  <img src="public/icon.png" alt="Serkhet Logo" width="120" />
 </div>
+
+<div align="center"><strong>Advanced IoT Security Monitoring & Malware Analysis Platform</strong></div>
+<div align="center">Built with Next.js 15 App Router</div>
+<br />
 
 ## Overview
 
-This is a starter template using the following stack:
+Serkhet is a comprehensive IoT security monitoring and malware analysis platform designed to protect your connected devices from emerging threats. The platform provides real-time visibility into security events, malware detection, and anomalous behavior across your IoT network.
 
-- Framework - [Next.js 15](https://nextjs.org/13)
-- Language - [TypeScript](https://www.typescriptlang.org)
-- Styling - [Tailwind CSS v4](https://tailwindcss.com)
-- Components - [Shadcn-ui](https://ui.shadcn.com)
-- Schema Validations - [Zod](https://zod.dev)
-- State Management - [Zustand](https://zustand-demo.pmnd.rs)
-- Search params state manager - [Nuqs](https://nuqs.47ng.com/)
-- Auth - [Clerk](https://go.clerk.com/ILdYhn7)
-- Tables - [Tanstack Data Tables](https://ui.shadcn.com/docs/components/data-table) • [Dice UI](https://www.diceui.com/docs/components/data-table)
-- Forms - [React Hook Form](https://ui.shadcn.com/docs/components/form)
-- Command+k interface - [kbar](https://kbar.vercel.app/)
-- Linting - [ESLint](https://eslint.org)
-- Pre-commit Hooks - [Husky](https://typicode.github.io/husky/)
-- Formatting - [Prettier](https://prettier.io)
+### Key Features
 
-_If you are looking for a React admin dashboard starter, here is the [repo](https://github.com/Kiranism/react-shadcn-dashboard-starter)._
+- **Security Event Monitoring**: Track and analyze various security events including:
+  - Suspicious file access attempts
+  - Ransomware activity detection
+  - Kernel module loading
+  - Privilege escalation attempts
+  - User management changes
 
-## Pages
+- **Real-time Dashboard**: Visualize security data through interactive charts and graphs:
+  - Event distribution by category
+  - Timeline analysis of security incidents
+  - Node status monitoring
+  - Detailed event information
 
-| Pages                                                                                 | Specifications                                                                                                                                                                                                                                                          |
-| :------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Signup / Signin](https://next-shadcn-dashboard-starter.vercel.app/auth/sign-up)      | Authentication with **Clerk** provides secure authentication and user management with multiple sign-in options including passwordless authentication, social logins, and enterprise SSO - all designed to enhance security while delivering a seamless user experience. |
-| [Dashboard (Overview)](https://next-shadcn-dashboard-starter.vercel.app/dashboard)    | Cards with recharts graphs for analytics.Parallel routes in the overview sections with independent loading, error handling, and isolated component rendering .                                                                                                          |
-| [Product](https://next-shadcn-dashboard-starter.vercel.app/dashboard/product)         | Tanstack tables with server side searching, filter, pagination by Nuqs which is a Type-safe search params state manager in nextjs                                                                                                                                       |
-| [Product/new](https://next-shadcn-dashboard-starter.vercel.app/dashboard/product/new) | A Product Form with shadcn form (react-hook-form + zod).                                                                                                                                                                                                                |
-| [Profile](https://next-shadcn-dashboard-starter.vercel.app/dashboard/profile)         | Clerk's full-featured account management UI that allows users to manage their profile and security settings                                                                                                                                                             |
-| [Kanban Board](https://next-shadcn-dashboard-starter.vercel.app/dashboard/kanban)     | A Drag n Drop task management board with dnd-kit and zustand to persist state locally.                                                                                                                                                                                  |
-| [Not Found](https://next-shadcn-dashboard-starter.vercel.app/dashboard/notfound)      | Not Found Page Added in the root level                                                                                                                                                                                                                                  |
-| -                                                                                     | -                                                                                                                                                                                                                                                                       |
+- **IoT Node Management**: Monitor the status and health of connected IoT devices:
+  - Track online/offline status
+  - Identify devices with warning conditions
 
-## Feature based organization
+- **Data Upload & Analysis**: Upload security data in JSON format for immediate analysis and visualization
 
-```plaintext
-src/
-├── app/ # Next.js App Router directory
-│ ├── (auth)/ # Auth route group
-│ │ ├── (signin)/
-│ ├── (dashboard)/ # Dashboard route group
-│ │ ├── layout.tsx
-│ │ ├── loading.tsx
-│ │ └── page.tsx
-│ └── api/ # API routes
-│
-├── components/ # Shared components
-│ ├── ui/ # UI components (buttons, inputs, etc.)
-│ └── layout/ # Layout components (header, sidebar, etc.)
-│
-├── features/ # Feature-based modules
-│ ├── feature/
-│ │ ├── components/ # Feature-specific components
-│ │ ├── actions/ # Server actions
-│ │ ├── schemas/ # Form validation schemas
-│ │ └── utils/ # Feature-specific utilities
-│ │
-├── lib/ # Core utilities and configurations
-│ ├── auth/ # Auth configuration
-│ ├── db/ # Database utilities
-│ └── utils/ # Shared utilities
-│
-├── hooks/ # Custom hooks
-│ └── use-debounce.ts
-│
-├── stores/ # Zustand stores
-│ └── dashboard-store.ts
-│
-└── types/ # TypeScript types
-└── index.ts
-```
+## Dashboard Overview
+
+The Serkhet dashboard provides a comprehensive view of your IoT security landscape:
+
+### Security Event Metrics
+
+- **Total Events**: Aggregate count of all security events across categories
+- **File Access**: Monitoring of sensitive file access attempts
+- **Ransomware Detection**: Identification of potential ransomware activity
+- **Node Status**: Real-time monitoring of IoT device health
+
+### Visualizations
+
+- **Event Distribution**: Pie chart showing the breakdown of security events by category
+- **Event Timeline**: Bar chart displaying security event frequency over time
+- **Detailed Event Table**: Comprehensive list of security events with process, PID, and path information
 
 ## Getting Started
 
-> [!NOTE]  
-> We are using **Next 15** with **React 19**, follow these steps:
+### Prerequisites
 
-Clone the repo:
+- Node.js 18.x or higher
+- npm or pnpm package manager
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/abhikrishnaram/serkhet.git
+cd serkhet
+```
+
+2. Install dependencies:
+```bash
+pnpm install
+```
+
+3. Create a `.env.local` file by copying the example environment file:
+```bash
+cp env.example.txt .env.local
+```
+
+4. Add the required environment variables to the `.env.local` file.
+
+5. Start the development server:
+```bash
+pnpm dev
+```
+
+The application will be available at http://localhost:3000.
+
+## Usage
+
+### Accessing the Dashboard
+
+1. Navigate to http://localhost:3000/dashboard/overview to access the main security dashboard.
+2. Sign in using your credentials if authentication is enabled.
+
+### Uploading Security Data
+
+1. Use the "Upload Security Data" card on the dashboard.
+2. Select a JSON file containing security event data.
+3. The dashboard will automatically update with the new data.
+
+
+## Technology Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
+- **Components**: [Shadcn-ui](https://ui.shadcn.com)
+- **Authentication**: [Clerk](https://clerk.com)
+- **Charts & Visualization**: [Recharts](https://recharts.org)
+
+## Project Structure
 
 ```
-git clone https://github.com/Kiranism/next-shadcn-dashboard-starter.git
+src/
+├── app/
+│   ├── dashboard/
+│   │   ├── overview/           # Main security dashboard
+│   │   │   ├── @area_stats/    # Area chart statistics
+│   │   │   ├── @bar_stats/     # Bar chart statistics
+│   │   │   ├── @events/        # Recent events list
+│   │   │   ├── @pie_stats/     # Pie chart statistics
+│   │   │   ├── @stats/         # Summary statistics cards
+│   │   │   ├── @upload/        # File upload component
+│   │   │   ├── layout.tsx      # Dashboard layout
+│   │   │   └── page.tsx        # Main dashboard page
+│   │   ├── events/             # Detailed events page
+│   │   └── nodes/              # IoT nodes management
+│   └── api/                    # API routes
+│       └── upload/             # File upload API
+├── components/                 # Shared components
+├── features/                   # Feature modules
+│   ├── overview/               # Dashboard components
+│   └── events/                 # Event analysis components
+├── lib/                        # Core utilities
+│   └── data-service.ts         # Security data service
+└── types/                      # TypeScript types
 ```
 
-- `pnpm install` ( we have legacy-peer-deps=true added in the .npmrc)
-- Create a `.env.local` file by copying the example environment file:
-  `cp env.example.txt .env.local`
-- Add the required environment variables to the `.env.local` file.
-- `pnpm run dev`
+## Contributing
 
-You should now be able to access the application at http://localhost:3000.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-> [!WARNING]
-> After cloning or forking the repository, be cautious when pulling or syncing with the latest changes, as this may result in breaking conflicts.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Cheers! 🥂
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+---
+
+<div align="center">
+  <p>Serkhet - Securing the Internet of Things</p>
+</div>

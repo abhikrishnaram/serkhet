@@ -28,7 +28,7 @@ interface UIEvent {
   args?: string[];
 }
 
-export default function EventsPage() {
+export default function EventsPageView() {
   const [events, setEvents] = useState<UIEvent[]>([]);
   const [loading, setLoading] = useState(true);
 

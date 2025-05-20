@@ -1,18 +1,19 @@
 'use client';
 
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, startOfDay, endOfDay, eachDayOfInterval } from 'date-fns';
 import { IconClock } from '@tabler/icons-react';
 import {
   CartesianGrid,
-  ScatterChart,
+  ComposedChart,
   Legend,
   ResponsiveContainer,
-  Scatter,
+  Bar,
+  Line,
   Tooltip,
   XAxis,
   YAxis,
   TooltipProps,
-  ZAxis
+  Cell
 } from 'recharts';
 
 import {
@@ -55,96 +56,161 @@ type TimelineEvent = {
   node_name: string;
   process: string;
   details: string;
+  timestampNum: number;
+  value: number;
   [key: string]: any;
 };
 
-// Sample data transformation function
-const transformDataForTimeline = (data: any): TimelineEvent[] => {
-  const allEvents: TimelineEvent[] = [];
-  
-  // Process file_access events
-  if (data.events) {
-    data.events.forEach((event: any) => {
-      allEvents.push({
-        timestamp: event.timestamp,
-        event: 'file_access',
-        node_name: event.node_name,
-        process: event.process,
-        details: `Accessed ${event.file}`,
-        ...event
-      });
-    });
-  }
-  
-  // Process module_load events
-  if (data.module_load) {
-    data.module_load.forEach((event: any) => {
-      allEvents.push({
-        timestamp: event.timestamp,
-        event: 'module_load',
-        node_name: event.node_name,
-        process: event.process,
-        details: `Loaded ${event.args.join(' ')}`,
-        ...event
-      });
-    });
-  }
-  
-  // Process ransomware events
-  if (data.ransomware) {
-    data.ransomware.forEach((event: any) => {
-      allEvents.push({
-        timestamp: event.timestamp,
-        event: 'ransomware',
-        node_name: event.node_name,
-        process: event.process,
-        details: `Encrypted ${event.file}${event.elevated ? ' (elevated)' : ''}`,
-        ...event
-      });
-    });
-  }
-  
-  // Process privilege_escalation events
-  if (data.privilege_escalation) {
-    data.privilege_escalation.forEach((event: any) => {
-      allEvents.push({
-        timestamp: event.timestamp,
-        event: 'privilege_escalation',
-        node_name: event.node_name,
-        process: event.process,
-        details: event.uid === 0 ? 'Escalated to root (uid=0)' : `Privilege change: ${event.event}`,
-        ...event
-      });
-    });
-  }
-  
-  // Process user_management events
-  if (data.user_management) {
-    data.user_management.forEach((event: any) => {
-      allEvents.push({
-        timestamp: event.timestamp,
-        event: 'user_management',
-        node_name: event.node_name,
-        process: event.process,
-        details: `${event.args.join(' ')}`,
-        ...event
-      });
-    });
-  }
-  
-  // Sort all events by timestamp and convert timestamps to numbers
-  return allEvents.sort((a, b) => 
-    new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-  ).map(event => ({
-    ...event,
-    timestampNum: new Date(event.timestamp).getTime(),
-    value: EVENT_TYPES.indexOf(event.event) + 1 // Add value for Y-axis positioning
-  }));
+// Define a type for database events
+type DbEvent = {
+  id: number;
+  event_type: string;
+  timestamp: Date;
+  pid: number;
+  process: string;
+  process_path: string;
+  node_id: string;
+  raw_data: any;
 };
 
-// Import sample data
-import sampleData from '../../../../sample_data.json';
-const timelineData = transformDataForTimeline(sampleData);
+// Transform database events to timeline format
+const transformDbEventsForTimeline = (events: DbEvent[]): any[] => {
+  if (!events || events.length === 0) {
+    return [];
+  }
+  
+  // Helper function to categorize and add events
+  const categorizeEvent = (event: DbEvent): { eventType: string, details: string } => {
+    let eventType: string;
+    let details = '';
+    
+    // Categorize events based on event_type
+    switch (event.event_type) {
+      case 'file_access':
+      case 'sensitive_file_access':
+        eventType = 'file_access';
+        details = `Accessed ${event.raw_data?.file || 'unknown file'}`;
+        break;
+      
+      case 'module_load':
+      case 'insmod_event':
+        eventType = 'module_load';
+        details = `Loaded ${Array.isArray(event.raw_data?.args) ? event.raw_data.args.join(' ') : 'module'}`;
+        break;
+      
+      case 'ransomware':
+      case 'ransomware_event':
+        eventType = 'ransomware';
+        details = `Encrypted ${event.raw_data?.file || 'files'}${event.raw_data?.elevated ? ' (elevated)' : ''}`;
+        break;
+
+      case 'privilege_escalation':
+      case 'usermod_event':
+        eventType = 'privilege_escalation';
+        details = event.raw_data?.uid === 0 ? 'Escalated to root (uid=0)' : `Privilege change: ${event.raw_data?.event || 'unknown'}`;
+        break;
+
+      case 'user_management':
+      case 'setgid':
+      case 'setuid':
+      case 'setuid_event':
+      case 'setgid_event':
+        eventType = 'user_management';
+        details = Array.isArray(event.raw_data?.args) ? event.raw_data.args.join(' ') : 'user management action';
+        break;
+
+      default:
+        // Try to infer the event type from raw_data
+        if (event.raw_data?.file) {
+          eventType = 'file_access';
+          details = `Accessed ${event.raw_data.file}`;
+        } else if (event.raw_data?.args && Array.isArray(event.raw_data.args)) {
+          if (event.raw_data.binary?.includes('insmod') || event.raw_data.binary?.includes('modprobe')) {
+            eventType = 'module_load';
+            details = `Loaded ${event.raw_data.args.join(' ')}`;
+          } else if (event.raw_data.binary?.includes('user')) {
+            eventType = 'user_management';
+            details = `${event.raw_data.args.join(' ')}`;
+          } else {
+            eventType = 'file_access'; // Default
+            details = `Event: ${event.event_type}`;
+          }
+        } else if (event.raw_data?.elevated !== undefined) {
+          eventType = 'ransomware';
+          details = `Encrypted ${event.raw_data.file || 'files'}${event.raw_data.elevated ? ' (elevated)' : ''}`;
+        } else if (event.raw_data?.uid === 0 || event.raw_data?.gid === 0) {
+          eventType = 'privilege_escalation';
+          details = event.raw_data.uid === 0 ? 'Escalated to root (uid=0)' : `Privilege change: ${event.raw_data.event || 'unknown'}`;
+        } else {
+          // Default fallback
+          eventType = 'file_access';
+          details = `Event: ${event.event_type}`;
+          console.warn(`Unknown event type: ${event.event_type}`);
+        }
+    }
+    
+    return { eventType, details };
+  };
+  
+  // Process events to categorize them
+  const processedEvents = events.map(event => {
+    // Extract node_name from raw_data if available
+    const node_name = event.raw_data?.node_name || event.node_id;
+    
+    // Categorize the event
+    const { eventType, details } = categorizeEvent(event);
+    
+    // Format the timestamp as ISO string if it's a Date object
+    const timestamp = event.timestamp instanceof Date 
+      ? event.timestamp.toISOString() 
+      : typeof event.timestamp === 'string' 
+        ? event.timestamp 
+        : new Date().toISOString();
+    
+    return {
+      timestamp,
+      event: eventType,
+      node_name,
+      process: event.process,
+      details,
+      timestampNum: new Date(timestamp).getTime(),
+      date: format(new Date(timestamp), 'yyyy-MM-dd'),
+      ...event.raw_data
+    };
+  });
+  
+  // Sort all events by timestamp
+  const sortedEvents = processedEvents.sort((a, b) => a.timestampNum - b.timestampNum);
+  
+  // Get date range
+  const startDate = startOfDay(new Date(sortedEvents[0].timestamp));
+  const endDate = endOfDay(new Date(sortedEvents[sortedEvents.length - 1].timestamp));
+  
+  // Generate all days in the range
+  const allDays = eachDayOfInterval({ start: startDate, end: endDate });
+  
+  // Create a map to count events by date and type
+  const eventsByDate = allDays.map(day => {
+    const dateStr = format(day, 'yyyy-MM-dd');
+    const dayEvents = sortedEvents.filter(event => event.date === dateStr);
+    
+    // Count events by type
+    const counts = EVENT_TYPES.reduce((acc, type) => {
+      acc[type] = dayEvents.filter(event => event.event === type).length;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    return {
+      date: dateStr,
+      displayDate: format(day, 'MMM dd'),
+      ...counts,
+      // Store all events for this day for tooltip access
+      _events: dayEvents
+    };
+  });
+  
+  return eventsByDate;
+};
 
 // Create chart config for Recharts
 const chartConfig = {
@@ -162,20 +228,39 @@ const chartConfig = {
   }, {} as Record<string, { label: string; color: string }>)
 } satisfies ChartConfig;
 
-// Custom tooltip component for the scatter chart
-const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
+// Enhanced tooltip component for the chart
+const CustomTooltip = ({ active, payload, label }: TooltipProps<any, any>) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
+    const date = data.displayDate;
+    
+    // Get all events for this day
+    const dayEvents = data._events || [];
+    
+    // Count events by type
+    const eventCounts = EVENT_TYPES.reduce((acc, type) => {
+      acc[type] = dayEvents.filter((event: TimelineEvent) => event.event === type).length;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    // Get total events for this day
+    const totalEvents = dayEvents.length;
+    
     return (
       <div className="bg-background border rounded-md shadow-md p-3 text-sm">
-        <p className="font-medium">{format(parseISO(data.timestamp), 'MMM d, yyyy HH:mm:ss')}</p>
-        <p className="text-muted-foreground">{data.node_name}</p>
+        <p className="font-medium">{date}</p>
         <div className="mt-2">
-          <p><span className="font-medium">Process:</span> {data.process}</p>
-          <p><span className="font-medium">Event:</span> {data.event.split('_').map((word: string) => 
-            word.charAt(0).toUpperCase() + word.slice(1)
-          ).join(' ')}</p>
-          <p><span className="font-medium">Details:</span> {data.details}</p>
+          <p className="font-medium">Total Events: {totalEvents}</p>
+          {EVENT_TYPES.map(type => (
+            eventCounts[type] > 0 && (
+              <div key={type} className="flex items-center justify-between mt-1">
+                <span style={{ color: EVENT_COLORS[type as keyof typeof EVENT_COLORS] }}>
+                  {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}:
+                </span>
+                <span className="ml-2 font-medium">{eventCounts[type]}</span>
+              </div>
+            )
+          ))}
         </div>
       </div>
     );
@@ -183,15 +268,18 @@ const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
   return null;
 };
 
-export function TimelineGraph() {
-  // Group events by date for x-axis
-  const dateGroups = timelineData.reduce((acc, event) => {
-    const date = format(parseISO(event.timestamp), 'yyyy-MM-dd');
-    if (!acc.includes(date)) {
-      acc.push(date);
-    }
-    return acc;
-  }, [] as string[]);
+export function TimelineGraph({ events }: { events: DbEvent[] }) {
+  // Transform database events to timeline format
+  const timelineData = transformDbEventsForTimeline(events);
+  console.log(timelineData)
+  // Get total events count
+  const totalEvents = events.length;
+  
+  // Get date range for display
+  const dateRange = timelineData.length > 0 ? {
+    start: format(new Date(timelineData[0].date), 'MMM d, yyyy'),
+    end: format(new Date(timelineData[timelineData.length - 1].date), 'MMM d, yyyy')
+  } : { start: '', end: '' };
 
   return (
     <Card className='@container/card !pt-3'>
@@ -211,125 +299,89 @@ export function TimelineGraph() {
               Total Events
             </span>
             <span className='text-lg leading-none font-bold sm:text-3xl'>
-              {24}
+              {totalEvents}
             </span>
           </div>
         </div>
       </CardHeader>
       <CardContent className='px-2 pt-6 sm:px-6'>
-        <ChartContainer
-          config={chartConfig}
-          className='aspect-auto h-[500px] w-full'
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart
-              data={timelineData}
-              margin={{
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 20,
-              }}
-            >
-              <defs>
-                {EVENT_TYPES.map(eventType => (
-                  <linearGradient
-                    key={eventType}
-                    id={`gradient-${eventType}`}
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop
-                      offset="5%"
-                      stopColor={EVENT_COLORS[eventType as keyof typeof EVENT_COLORS]}
-                      stopOpacity={0.9}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor={EVENT_COLORS[eventType as keyof typeof EVENT_COLORS]}
-                      stopOpacity={0.7}
-                    />
-                  </linearGradient>
-                ))}
-              </defs>
-              <CartesianGrid stroke="#f5f5f5" />
-              <XAxis 
-                dataKey="timestampNum"
-                type="number"
-                name="Time"
-                domain={['dataMin', 'dataMax']}
-                tickFormatter={(value) => {
-                  try {
-                    return format(new Date(value), 'MM/dd HH:mm');
-                  } catch {
-                    return value;
-                  }
+        {timelineData.length > 0 ? (
+          <ChartContainer
+            config={chartConfig}
+            className='aspect-auto h-[500px] w-full'
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart
+                data={timelineData}
+                margin={{
+                  top: 20,
+                  right: 20,
+                  bottom: 60,
+                  left: 20,
                 }}
-                scale="time"
-              />
-              <YAxis 
-                dataKey="event"
-                type="category"
-                name="Event Type"
-                ticks={EVENT_TYPES}
-                tickFormatter={(value: string) => value.split('_').map((word: string) => 
-                  word.charAt(0).toUpperCase() + word.slice(1)
-                ).join(' ')}
-              />
-              <ZAxis range={[100, 100]} />
-              <ChartTooltip
-                cursor={{ opacity: 0.1 }}
-                content={
-                  <ChartTooltipContent
-                    className='w-[250px]'
-                    labelFormatter={(value) => {
-                      if (typeof value === 'number') {
-                        return format(new Date(value), 'MMM d, yyyy HH:mm:ss');
-                      }
-                      return value;
-                    }}
-                  />
-                }
-              />
-              <Legend />
-              {EVENT_TYPES.map(eventType => (
-                <Scatter
-                  key={eventType}
-                  name={eventType.split('_').map((word: string) => 
-                    word.charAt(0).toUpperCase() + word.slice(1)
-                  ).join(' ')}
-                  data={timelineData.filter(event => event.event === eventType)}
-                  dataKey="timestampNum"
-                  fill={`url(#gradient-${eventType})`}
-                  shape={(props: { cx?: number; cy?: number }) => (
-                    <circle
-                      cx={props.cx}
-                      cy={props.cy}
-                      r={8}
-                      fill={`url(#gradient-${eventType})`}
-                      stroke={EVENT_COLORS[eventType as keyof typeof EVENT_COLORS]}
-                      strokeWidth={2}
-                      opacity={0.9}
-                    />
-                  )}
-                  legendType="circle"
+              >
+                <CartesianGrid stroke="#f5f5f5" />
+                <XAxis 
+                  dataKey="displayDate"
+                  scale="band"
+                  angle={-45}
+                  textAnchor="end"
+                  height={60}
+                  tick={{ fontSize: 12 }}
                 />
-              ))}
-            </ScatterChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+                <YAxis 
+                  label={{ value: 'Event Count', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend verticalAlign="top" height={36} />
+                
+                {EVENT_TYPES.map(eventType => (
+                  <Bar 
+                    key={eventType}
+                    dataKey={eventType}
+                    name={eventType.split('_').map((word: string) => 
+                      word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ')}
+                    stackId="a"
+                    fill={EVENT_COLORS[eventType as keyof typeof EVENT_COLORS]}
+                  />
+                ))}
+                
+                {/* Add a line for total events per day */}
+                <Line
+                  type="monotone"
+                  dataKey={(data) => {
+                    return EVENT_TYPES.reduce((sum, type) => sum + (data[type] || 0), 0);
+                  }}
+                  name="Total Events"
+                  stroke="#8884d8"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        ) : (
+          <div className="flex h-[500px] items-center justify-center">
+            <p className="text-muted-foreground">No events data available</p>
+          </div>
+        )}
       </CardContent>
       <CardFooter>
         <div className='flex w-full items-start gap-2 text-sm'>
           <div className='grid gap-2'>
             <div className='flex items-center gap-2 leading-none font-medium'>
-              Events from April 8-10, 2025
+              {timelineData.length > 0 ? (
+                dateRange.start === dateRange.end ? 
+                  `Events from ${dateRange.start}` : 
+                  `Events from ${dateRange.start} to ${dateRange.end}`
+              ) : (
+                'No events data'
+              )}
               <IconClock className='h-4 w-4' />
             </div>
             <div className='text-muted-foreground flex items-center gap-2 leading-none'>
-              {timelineData.length} security events tracked
+              {totalEvents} security events tracked
             </div>
           </div>
         </div>
